@@ -66,15 +66,19 @@ The fields available in an `event` are described below.
 
 Field | Type | Description
 ----- | ----- | -------------
-id | string |ID provides a unique identifier for the event.
+id | string | ID provides a unique identifier for the event.
 timestamp | Time | Timestamp is the time at which the event occurred.
-action |  string |  Action indicates what action encompasses the provided event.
-target | distribution.Descriptor | Target uniquely describes the target of the event.
-length | int | Length in bytes of content. Same as Size field in Descriptor.
-repository | string | Repository identifies the named repository.
-fromRepository | string |  FromRepository identifies the named repository which a blob was mounted from if appropriate.
-url | string | URL provides a direct link to the content.
-tag | string | Tag identifies a tag name in tag events.
+action | string | Action indicates what action encompasses the provided event.
+target | object | Target uniquely describes the target of the event. Its fields are listed below.
+target.mediaType | string | Media type of the target content (from the OCI descriptor).
+target.digest | string | Digest uniquely identifies the target content (from the OCI descriptor).
+target.size | int | Size in bytes of the content (from the OCI descriptor). Favor this over `length`.
+target.length | int | Length in bytes of content. Same as Size field in Descriptor. Deprecated since 2.1 in favor of `size`.
+target.repository | string | Repository identifies the named repository.
+target.fromRepository | string | FromRepository identifies the named repository which a blob was mounted from if appropriate.
+target.url | string | URL provides a direct link to the content.
+target.tag | string | Tag identifies a tag name in tag events.
+target.references | array | References provides the reference descriptors.
 request | [RequestRecord](https://pkg.go.dev/github.com/distribution/distribution/notifications#RequestRecord) | Request covers the request that generated the event.
 actor | [ActorRecord](https://pkg.go.dev/github.com/distribution/distribution/notifications#ActorRecord). |  Actor specifies the agent that initiated the event. For most situations, this could be from the authorization context of the request.
 source | [SourceRecord](https://pkg.go.dev/github.com/distribution/distribution/notifications#SourceRecord) |  Source identifies the registry node that generated the event. Put differently, while the actor "initiates" the event, the source "generates" it.
